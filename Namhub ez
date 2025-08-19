@@ -1,0 +1,201 @@
+-- ⚡ NamHub Full Script ⚡
+local gui = Instance.new("ScreenGui", game.CoreGui)
+gui.Name = "NamHub"
+
+local main = Instance.new("Frame", gui)
+main.Size = UDim2.new(0, 420, 0, 300)
+main.Position = UDim2.new(0.5, -210, 0.5, -150)
+main.BackgroundColor3 = Color3.fromRGB(40,40,55)
+main.Active = true
+main.Draggable = true
+Instance.new("UICorner", main).CornerRadius = UDim.new(0,12)
+
+local top = Instance.new("Frame", main)
+top.Size = UDim2.new(1,0,0,40)
+top.BackgroundColor3 = Color3.fromRGB(30,30,45)
+Instance.new("UICorner", top).CornerRadius = UDim.new(0,12)
+
+local title = Instance.new("TextLabel", top)
+title.Size = UDim2.new(1,-80,1,0)
+title.Position = UDim2.new(0,10,0,0)
+title.Text = "⚡ NamHub ⚡"
+title.TextColor3 = Color3.fromRGB(255,255,255)
+title.Font = Enum.Font.GothamBold
+title.TextScaled = true
+title.BackgroundTransparency = 1
+
+local btnMin = Instance.new("TextButton", top)
+btnMin.Size = UDim2.new(0,40,1,0)
+btnMin.Position = UDim2.new(1,-80,0,0)
+btnMin.Text = "–"
+btnMin.TextColor3 = Color3.fromRGB(255,255,255)
+btnMin.Font = Enum.Font.GothamBold
+btnMin.TextScaled = true
+btnMin.BackgroundTransparency = 1
+
+local btnClose = Instance.new("TextButton", top)
+btnClose.Size = UDim2.new(0,40,1,0)
+btnClose.Position = UDim2.new(1,-40,0,0)
+btnClose.Text = "✖"
+btnClose.TextColor3 = Color3.fromRGB(255,80,80)
+btnClose.Font = Enum.Font.GothamBold
+btnClose.TextScaled = true
+btnClose.BackgroundTransparency = 1
+
+local side = Instance.new("Frame", main)
+side.Size = UDim2.new(0,100,1,-40)
+side.Position = UDim2.new(0,0,0,40)
+side.BackgroundColor3 = Color3.fromRGB(50,50,70)
+
+local content = Instance.new("Frame", main)
+content.Size = UDim2.new(1,-100,1,-40)
+content.Position = UDim2.new(0,100,0,40)
+content.BackgroundColor3 = Color3.fromRGB(60,60,85)
+
+local mini = Instance.new("TextButton", gui)
+mini.Size = UDim2.new(0,160,0,40)
+mini.Position = UDim2.new(0,20,0,100)
+mini.BackgroundColor3 = Color3.fromRGB(33,42,60)
+mini.Text = "⚡ NamHub ⚡"
+mini.Font = Enum.Font.GothamBold
+mini.TextScaled = true
+mini.TextColor3 = Color3.fromRGB(210,230,255)
+mini.Visible = false
+Instance.new("UICorner", mini).CornerRadius = UDim.new(0,10)
+
+btnMin.MouseButton1Click:Connect(function()
+    main.Visible = false
+    mini.Visible = true
+end)
+mini.MouseButton1Click:Connect(function()
+    main.Visible = true
+    mini.Visible = false
+end)
+btnClose.MouseButton1Click:Connect(function()
+    gui:Destroy()
+end)
+
+local tabs = {}
+local current
+local function addTab(name,order)
+    local btn = Instance.new("TextButton", side)
+    btn.Size = UDim2.new(1,0,0,40)
+    btn.Position = UDim2.new(0,0,0,(order-1)*40)
+    btn.Text = name
+    btn.Font = Enum.Font.GothamBold
+    btn.TextScaled = true
+    btn.TextColor3 = Color3.fromRGB(255,255,255)
+    local frame = Instance.new("Frame", content)
+    frame.Size = UDim2.new(1,0,1,0)
+    frame.Visible = false
+    tabs[name] = frame
+    btn.MouseButton1Click:Connect(function()
+        if current then current.Visible=false end
+        frame.Visible=true
+        current=frame
+    end)
+    if not current then
+        frame.Visible=true
+        current=frame
+    end
+    return frame
+end
+
+-- PLAYER TAB
+local playerTab = addTab("Player",1)
+local ws = Instance.new("TextButton", playerTab)
+ws.Size=UDim2.new(0,150,0,40)
+ws.Position=UDim2.new(0,20,0,20)
+ws.Text="Toggle Speed"
+ws.BackgroundColor3=Color3.fromRGB(90,110,140)
+ws.TextColor3=Color3.new(1,1,1)
+local jp = Instance.new("TextButton", playerTab)
+jp.Size=UDim2.new(0,150,0,40)
+jp.Position=UDim2.new(0,20,0,70)
+jp.Text="Toggle Jump"
+jp.BackgroundColor3=Color3.fromRGB(90,110,140)
+jp.TextColor3=Color3.new(1,1,1)
+local fly = Instance.new("TextButton", playerTab)
+fly.Size=UDim2.new(0,150,0,40)
+fly.Position=UDim2.new(0,20,0,120)
+fly.Text="Toggle Fly"
+fly.BackgroundColor3=Color3.fromRGB(90,110,140)
+fly.TextColor3=Color3.new(1,1,1)
+
+local p=game.Players.LocalPlayer
+local hum=p.Character:WaitForChild("Humanoid")
+local speed=false
+local jump=false
+local flying=false
+ws.MouseButton1Click:Connect(function()
+    speed=not speed
+    hum.WalkSpeed=speed and 50 or 16
+end)
+jp.MouseButton1Click:Connect(function()
+    jump=not jump
+    hum.JumpPower=jump and 120 or 50
+end)
+fly.MouseButton1Click:Connect(function()
+    flying=not flying
+    local hrp=p.Character:WaitForChild("HumanoidRootPart")
+    while flying do
+        hrp.Velocity=Vector3.new(0,50,0)
+        task.wait()
+    end
+end)
+
+-- FORSAKEN TAB
+local forsakenTab=addTab("Forsaken",2)
+local gen=Instance.new("TextButton", forsakenTab)
+gen.Size=UDim2.new(0,200,0,40)
+gen.Position=UDim2.new(0,20,0,20)
+gen.Text="Auto Fix Generator"
+gen.BackgroundColor3=Color3.fromRGB(100,120,160)
+gen.TextColor3=Color3.new(1,1,1)
+local fb=Instance.new("TextButton", forsakenTab)
+fb.Size=UDim2.new(0,200,0,40)
+fb.Position=UDim2.new(0,20,0,70)
+fb.Text="Toggle FullBright"
+fb.BackgroundColor3=Color3.fromRGB(100,120,160)
+fb.TextColor3=Color3.new(1,1,1)
+
+local autob=false
+local bright=false
+gen.MouseButton1Click:Connect(function()
+    autob=not autob
+    while autob do
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v.Name=="Generator" and v:FindFirstChild("Fix") then
+                fireproximityprompt(v.Fix)
+            end
+        end
+        task.wait(1)
+    end
+end)
+fb.MouseButton1Click:Connect(function()
+    bright=not bright
+    if bright then
+        game.Lighting.Ambient=Color3.new(1,1,1)
+        game.Lighting.Brightness=2
+    else
+        game.Lighting.Ambient=Color3.new(0,0,0)
+        game.Lighting.Brightness=1
+    end
+end)
+
+-- MISC TAB
+local miscTab=addTab("Misc",3)
+local lag=Instance.new("TextButton", miscTab)
+lag.Size=UDim2.new(0,200,0,40)
+lag.Position=UDim2.new(0,20,0,20)
+lag.Text="Fix Lag"
+lag.BackgroundColor3=Color3.fromRGB(120,140,180)
+lag.TextColor3=Color3.new(1,1,1)
+lag.MouseButton1Click:Connect(function()
+    settings().Rendering.QualityLevel=1
+    for _,v in pairs(workspace:GetDescendants()) do
+        if v:IsA("ParticleEmitter") or v:IsA("Trail") then
+            v.Enabled=false
+        end
+    end
+end)
