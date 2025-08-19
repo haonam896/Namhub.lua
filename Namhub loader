@@ -1,0 +1,100 @@
+-- ⚡ NamHub Loader ⚡
+
+local gui = Instance.new("ScreenGui", game.CoreGui)
+gui.Name = "NamHubLoader"
+
+local main = Instance.new("Frame", gui)
+main.Size = UDim2.new(0, 220, 0, 280)
+main.Position = UDim2.new(0.5, -110, 0.5, -140)
+main.BackgroundColor3 = Color3.fromRGB(36,45,60)
+main.Active = true
+main.Draggable = true
+Instance.new("UICorner", main).CornerRadius = UDim.new(0,12)
+
+local top = Instance.new("Frame", main)
+top.Size = UDim2.new(1,0,0,40)
+top.BackgroundColor3 = Color3.fromRGB(28,36,52)
+Instance.new("UICorner", top).CornerRadius = UDim.new(0,12)
+
+local title = Instance.new("TextLabel", top)
+title.Size = UDim2.new(1,-80,1,0)
+title.Position = UDim2.new(0,10,0,0)
+title.Text = "⚡ NamHub Loader ⚡"
+title.TextColor3 = Color3.fromRGB(255,255,255)
+title.Font = Enum.Font.GothamBold
+title.TextScaled = true
+title.BackgroundTransparency = 1
+
+-- Minimize Button
+local btnMin = Instance.new("TextButton", top)
+btnMin.Size = UDim2.new(0,40,1,0)
+btnMin.Position = UDim2.new(1,-80,0,0)
+btnMin.Text = "–"
+btnMin.TextColor3 = Color3.fromRGB(255,255,255)
+btnMin.Font = Enum.Font.GothamBold
+btnMin.TextScaled = true
+btnMin.BackgroundTransparency = 1
+
+-- Close Button
+local btnClose = Instance.new("TextButton", top)
+btnClose.Size = UDim2.new(0,40,1,0)
+btnClose.Position = UDim2.new(1,-40,0,0)
+btnClose.Text = "✖"
+btnClose.TextColor3 = Color3.fromRGB(255,80,80)
+btnClose.Font = Enum.Font.GothamBold
+btnClose.TextScaled = true
+btnClose.BackgroundTransparency = 1
+
+local body = Instance.new("Frame", main)
+body.Size = UDim2.new(1,0,1,-40)
+body.Position = UDim2.new(0,0,0,40)
+body.BackgroundColor3 = Color3.fromRGB(45,58,80)
+Instance.new("UICorner", body).CornerRadius = UDim.new(0,12)
+
+-- Function to create script buttons
+local function createButton(text, order, url)
+    local btn = Instance.new("TextButton", body)
+    btn.Size = UDim2.new(1, -20, 0, 40)
+    btn.Position = UDim2.new(0, 10, 0, 10 + (order-1)*50)
+    btn.BackgroundColor3 = Color3.fromRGB(47,61,86)
+    btn.Text = text
+    btn.TextColor3 = Color3.fromRGB(220,235,255)
+    btn.Font = Enum.Font.GothamBold
+    btn.TextScaled = true
+    Instance.new("UICorner", btn).CornerRadius = UDim.new(0,10)
+    btn.MouseButton1Click:Connect(function()
+        gui:Destroy()
+        loadstring(game:HttpGet(url))()
+    end)
+end
+
+-- Add scripts here
+createButton("Forsaken", 1, "https://raw.githubusercontent.com/MaybeNotMandy/forsaken/refs/heads/main/sae")
+createButton("SarynHub", 2, "https://raw.githubusercontent.com/Saiky988/Saryn-Hub/refs/heads/main/Saryn%25Hub%25Beta.lua")
+createButton("NamHub", 3, "https://raw.githubusercontent.com/haonam896/Namhub.lua/refs/heads/main/real.lua")
+
+-- Minimize/Close logic
+local mini = Instance.new("TextButton", gui)
+mini.Size = UDim2.new(0,160,0,40)
+mini.Position = UDim2.new(0,20,0,100)
+mini.BackgroundColor3 = Color3.fromRGB(33,42,60)
+mini.Text = "⚡ NamHub ⚡"
+mini.Font = Enum.Font.GothamBold
+mini.TextScaled = true
+mini.TextColor3 = Color3.fromRGB(210,230,255)
+mini.Visible = false
+Instance.new("UICorner", mini).CornerRadius = UDim.new(0,10)
+
+btnMin.MouseButton1Click:Connect(function()
+    main.Visible = false
+    mini.Visible = true
+end)
+
+mini.MouseButton1Click:Connect(function()
+    main.Visible = true
+    mini.Visible = false
+end)
+
+btnClose.MouseButton1Click:Connect(function()
+    gui:Destroy()
+end)
